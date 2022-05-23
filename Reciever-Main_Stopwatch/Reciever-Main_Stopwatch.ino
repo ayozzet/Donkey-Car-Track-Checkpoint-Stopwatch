@@ -22,6 +22,7 @@ int pass7 = 0;
 int pass8 = 0;
 int pass9 = 0;
 int pass10 = 0;
+int pass11 = 0;
 //LCD
 int lcdclear = 0; //this to variables are needed for managing
 int Display = 0; //the display, to clear and print
@@ -66,6 +67,7 @@ int id7 = 0;
 int id8 = 0;
 int id9 = 0;
 int id10 = 0;
+int id11 = 0;
 // Structure example to receive data
 // Must match the sender structure
 typedef struct struct_message {
@@ -210,6 +212,17 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
       Serial.println(checkpoint);
     }
     id10 = id10 + 1;
+  }
+
+  if (myData.id == 11) {
+    if (id11 == 0) {
+      int pass11 = pass11 + 1;
+      Serial.print("Start Time");
+      pass11 = pass11 + 1;
+      //String checkpoint = String(h) + ":" + String(m2) + String(m1) + ":" + String(s2) + String(s1) + ":" + String(c3) + String(c2) + String(c1);
+      //Serial.println(checkpoint);
+    }
+    id11 = id11 + 1;
   }
 }
 
@@ -474,7 +487,7 @@ void scrollPartial(void) {
 }
 
 void pause1(void) { //If pause is pressed, i stop in this function until start doesn't get pressed again
-  if (digitalRead(start) == LOW)
+  if (digitalRead(start) == LOW)    
     return;
   else if (digitalRead(start) == status) { //Stuck in this cycle until i press start
     delay(150);
@@ -627,7 +640,7 @@ void setup() {
 
 void loop() {
   if (x == 0) {  //Initially is 0
-    while (digitalRead(start) == LOW) {}; //Until i press the button, the chronometer doesn't start
+    while (digitalRead(start) == LOW || pass11 == 1) {}; //Until i press the button, the chronometer doesn't start //AKHYAR edit here for laser START
     status = !status;
     a = millis();
     x++; //When i press the button, i go out from this cycle, x++ and i cannot return here anymore
